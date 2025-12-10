@@ -7,11 +7,8 @@
 
 - Screenshot
 
-Tabel Alokasi
-<img width="1214" height="231" alt="Image" src="https://github.com/user-attachments/assets/2916dacb-07ba-479d-8402-4c74add516b6" />
-
-VLSM TREE
-<img width="8178" height="3850" alt="Image" src="https://github.com/user-attachments/assets/ca7571ad-56a8-4b3d-a3bc-530dffa2dd59" />
+Hasil Visualisasi
+<img width="532" height="551" alt="Image" src="https://github.com/user-attachments/assets/24cce699-07a8-4e71-9a44-fa16c3582dc0" />
 
 - Explanation
 
