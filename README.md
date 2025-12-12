@@ -152,3 +152,164 @@ else:
 <br>
 
 ## Soal 2
+
+# Largest Monotonically Increasing Subsequence (LIS) — Tree Expansion Method
+
+Program ini menyelesaikan permasalahan **Largest Monotonically Increasing Subsequence (LIS)** menggunakan pendekatan *tree expansion*.  
+Setiap node pada tree merepresentasikan satu subsekuensi meningkat, dan tree bertumbuh seiring proses eksplorasi semua kemungkinan subsekuensi.  
+Pendekatan ini memungkinkan program menemukan **seluruh subsekuensi meningkat** serta **seluruh LIS** yang mungkin, bukan hanya satu.
+
+Dokumentasi ini menjelaskan secara detail fungsi dan alur logika dalam program.
+
+---
+
+## 📌 Tujuan Program
+Program ini bertujuan untuk:
+
+- Mengeksplorasi semua subsekuensi monotonik meningkat dari suatu urutan bilangan.
+- Menghilangkan duplikasi subsekuensi menggunakan struktur set.
+- Menentukan panjang LIS.
+- Menampilkan **semua subsekuensi LIS** yang memiliki panjang maksimum.
+
+Pendekatan tree dipilih untuk memperlihatkan bagaimana sebuah subsekuensi bisa berkembang menjadi banyak jalur cabang.
+
+---
+
+## 🧠 Penjelasan Detail Setiap Bagian Kode
+
+### 1️⃣ **Class `Node`**
+Class ini adalah struktur dasar tree.
+
+Setiap node menyimpan:
+- `value` → nilai terakhir subsekuensi
+- `seq` → seluruh elemen subsekuensi sampai node tersebut
+- `children` → daftar node turunan yang memperpanjang subsekuensi ini
+
+**Perannya:**  
+Menjadi representasi satu *state subsequence* dalam pohon yang bertumbuh.
+
+---
+
+### 2️⃣ **Fungsi `build_tree(arr)`**
+Fungsi ini membangun pohon dari awal menggunakan array input.
+
+Prosesnya:
+1. Menyimpan semua root dalam list `roots`.
+2. Untuk setiap angka `num` pada array:
+   - Mencoba menambahkan `num` ke subsekuensi yang sudah ada sebelumnya.
+   - Membuat subsekuensi baru yang dimulai dari angka itu sendiri `[num]`.
+3. Semua subsekuensi baru ditambahkan sebagai node baru.
+
+**Tujuan:**  
+Mengekspansi seluruh kemungkinan subsekuensi meningkat secara sistematis.
+
+---
+
+### 3️⃣ **Fungsi `explore_add(node, num, new_nodes)`**
+Fungsi rekursif yang menentukan apakah sebuah angka bisa ditambahkan ke subsekuensi tertentu.
+
+Aturan yang digunakan:
+- Jika `num > node.value`, berarti `num` dapat memperpanjang subsekuensi tersebut.
+- Sebuah node baru dibentuk yang mewakili subsekuensi baru.
+- Node baru tersebut ditambahkan sebagai anak (`children`) dari node current.
+
+Setelah pengembangan node utama:
+- Fungsi memanggil dirinya sendiri ke semua anak node untuk melanjutkan eksplorasi.
+
+**Inti logika:**  
+Menelusuri seluruh jalur subsekuensi tanpa melewatkan peluang pertumbuhan.
+
+---
+
+### 4️⃣ **Fungsi `collect_all_sequences(roots)`**
+Setelah tree selesai dibangun, fungsi ini mengumpulkan seluruh subsekuensi meningkat.
+
+Langkah-langkah:
+- Mengambil `seq` dari tiap root node.
+- Mengubah `seq` menjadi tuple agar bisa disimpan dalam set.
+- Set digunakan untuk menghapus duplikasi subsekuensi.
+- Setelah itu, tuple dikembalikan dalam bentuk list.
+
+**Mengapa perlu set?**  
+Karena tree dapat menghasilkan subsekuensi yang sama melalui jalur berbeda.
+
+---
+
+### 5️⃣ **Fungsi `get_all_LIS(sequences)`**
+Fungsi ini mencari subsekuensi dengan panjang maksimum.
+
+Alur kerja:
+1. Menentukan panjang terpanjang di antara semua subsekuensi meningkat.
+2. Mengembalikan semua subsekuensi yang memiliki panjang tersebut.
+
+**Keuntungan:**  
+Jika ada beberapa LIS, semuanya terdeteksi.
+
+---
+
+### 6️⃣ **Bagian Utama Program**
+Bagian utama program melakukan tahapan sebagai berikut:
+
+1. Mendefinisikan urutan bilangan sebagai input.
+2. Membangun tree subsekuensi menggunakan `build_tree`.
+3. Mengambil semua subsekuensi meningkat melalui `collect_all_sequences`.
+4. Menentukan LIS menggunakan `get_all_LIS`.
+5. Menampilkan:
+   - Semua subsekuensi meningkat
+   - Semua LIS beserta panjangnya
+
+Output memberikan gambaran lengkap mengenai seluruh perkembangan subsekuensi.
+
+---
+
+## 📥 Input Program
+Program menerima list bilangan, contoh: `[4, 1, 13, 7, 0, 2, 8, 11, 3]`
+
+
+---
+
+## 📤 Output Program
+Program menghasilkan dua bagian utama output:
+
+### 🔹 Semua subsekuensi meningkat (tanpa duplikasi)
+Disajikan dalam bentuk list, satu subsekuensi per baris.
+
+### 🔹 Largest Monotonically Increasing Subsequences
+Menampilkan:
+- Panjang LIS
+- Seluruh LIS (bisa lebih dari satu)
+
+Contoh: 
+```
+=== Semua subsekuensi meningkat ===
+[0]
+[0, 2]
+[0, 2, 3]
+[0, 2, 8]
+[0, 2, 8, 11]
+[0, 2, 11]
+...
+
+=== Largest Monotonically Increasing Subsequence ===
+Length : 4
+[1, 2, 8, 11]
+[1, 7, 8, 11]
+[4, 7, 8, 11]
+[0, 2, 8, 11]
+```
+
+---
+
+## 📝 Ringkasan Logika Program
+1. Tree dibangun untuk mengeksplorasi semua subsekuensi meningkat.
+2. Node pada tree menyimpan subsekuensi hingga tahap tersebut.
+3. Tree diekspansi menggunakan aturan `num > node.value`.
+4. Semua subsekuensi dikumpulkan dan duplikasi dihilangkan.
+5. LIS diambil berdasarkan panjang maksimum.
+6. Hasil ditampilkan sepenuhnya.
+
+Pendekatan ini cocok digunakan sebagai demonstrasi konsep tree, eksplorasi brute-force terstruktur, dan analisis subsekuensi.
+
+
+
+
